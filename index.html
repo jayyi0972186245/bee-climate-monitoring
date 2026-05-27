@@ -126,6 +126,38 @@
           </article>
         </section>
 
+        <section class="trend-panel" aria-labelledby="trendTitle">
+          <div class="trend-heading">
+            <div>
+              <p class="section-kicker">24hr Trend</p>
+              <h2 id="trendTitle">今日蜂箱風險趨勢</h2>
+            </div>
+            <p id="trendStatus">正在讀取過去 24 小時資料。</p>
+          </div>
+          <div class="trend-legend" aria-label="趨勢圖例">
+            <span><i class="legend-temp"></i>溫度</span>
+            <span><i class="legend-humidity"></i>濕度</span>
+            <span><i class="legend-wind"></i>風速</span>
+          </div>
+          <div class="chart-wrap">
+            <svg id="trendChart" viewBox="0 0 720 260" role="img" aria-labelledby="trendTitle"></svg>
+          </div>
+          <div class="trend-stats">
+            <div>
+              <span>溫度變化</span>
+              <strong id="tempTrend">讀取中</strong>
+            </div>
+            <div>
+              <span>濕度變化</span>
+              <strong id="humidityTrend">讀取中</strong>
+            </div>
+            <div>
+              <span>風速變化</span>
+              <strong id="windTrend">讀取中</strong>
+            </div>
+          </div>
+        </section>
+
     <section class="dashboard" aria-live="polite">
       <article class="result-panel">
         <div class="result-heading">

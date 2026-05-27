@@ -378,6 +378,138 @@ select {
   background: #315f42;
 }
 
+.trend-panel {
+  margin-top: 24px;
+  padding: clamp(18px, 2.5vw, 28px);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.trend-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 14px;
+}
+
+.trend-heading h2 {
+  margin-bottom: 0;
+  font-size: 1.45rem;
+}
+
+.trend-heading p:last-child {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.trend-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 14px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.trend-legend span {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.trend-legend i {
+  width: 26px;
+  height: 4px;
+  border-radius: 99px;
+}
+
+.legend-temp {
+  background: #c94f38;
+}
+
+.legend-humidity {
+  background: #2f7bbd;
+}
+
+.legend-wind {
+  background: #7d6ac8;
+}
+
+.chart-wrap {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfdf8;
+}
+
+#trendChart {
+  display: block;
+  width: 100%;
+  min-height: 260px;
+}
+
+.chart-grid {
+  stroke: #dfe5da;
+  stroke-width: 1;
+}
+
+.chart-line {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.chart-temp {
+  stroke: #c94f38;
+}
+
+.chart-humidity {
+  stroke: #2f7bbd;
+}
+
+.chart-wind {
+  stroke: #7d6ac8;
+}
+
+.chart-label {
+  fill: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.trend-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.trend-stats div {
+  min-height: 86px;
+  padding: 14px;
+  background: var(--soft);
+  border-left: 4px solid var(--honey);
+}
+
+.trend-stats span,
+.trend-stats strong {
+  display: block;
+}
+
+.trend-stats span {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.trend-stats strong {
+  margin-top: 6px;
+  font-size: 1.05rem;
+}
+
 .dashboard {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
@@ -588,8 +720,13 @@ footer p {
 
   .level-grid,
   .info-grid,
-  .factor-list {
+  .factor-list,
+  .trend-stats {
     grid-template-columns: 1fr;
+  }
+
+  .trend-heading {
+    display: grid;
   }
 }
 

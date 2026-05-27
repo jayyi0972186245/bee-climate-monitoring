@@ -183,6 +183,11 @@ const assistantTemp = document.querySelector("#assistantTemp");
 const assistantHumidity = document.querySelector("#assistantHumidity");
 const generateAssistantAdvice = document.querySelector("#generateAssistantAdvice");
 const assistantAdviceText = document.querySelector("#assistantAdviceText");
+const trendStatus = document.querySelector("#trendStatus");
+const trendChart = document.querySelector("#trendChart");
+const tempTrend = document.querySelector("#tempTrend");
+const humidityTrend = document.querySelector("#humidityTrend");
+const windTrend = document.querySelector("#windTrend");
 
 let activeCity = citySelect.value;
 let activeWeather = null;
@@ -332,12 +337,93 @@ function formatTime(value) {
   return value.replace("T", " ");
 }
 
+function getLast24Hours(hourly, currentTime) {
+  if (!hourly || !hourly.time) return [];
+  const current = new Date(currentTime);
+  const start = new Date(current.getTime() - 24 * 60 * 60 * 1000);
+
+  return hourly.time
+    .map((time, index) => ({
+      time,
+      date: new Date(time),
+      temperature: hourly.temperature_2m[index],
+      humidity: hourly.relative_humidity_2m[index],
+      windSpeed: hourly.wind_speed_10m[index]
+    }))
+    .filter((point) => point.date >= start && point.date <= current)
+    .slice(-24);
+}
+
+function normalizePoints(values, width, height, padding) {
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const range = max - min || 1;
+  const innerWidth = width - padding.left - padding.right;
+  const innerHeight = height - padding.top - padding.bottom;
+
+  return values.map((value, index) => {
+    const x = padding.left + (innerWidth * index) / Math.max(values.length - 1, 1);
+    const y = padding.top + innerHeight - ((value - min) / range) * innerHeight;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(" ");
+}
+
+function summarizeSeries(points, key, unit, digits = 1) {
+  if (!points.length) return "無資料";
+  const values = points.map((point) => point[key]).filter((value) => Number.isFinite(value));
+  if (!values.length) return "無資料";
+  const latest = values[values.length - 1];
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  return `最新 ${latest.toFixed(digits)}${unit}｜低 ${min.toFixed(digits)}｜高 ${max.toFixed(digits)}`;
+}
+
+function renderTrendChart(points) {
+  if (!points.length) {
+    trendChart.innerHTML = `<text x="360" y="130" text-anchor="middle" class="chart-label">目前沒有足夠的 24 小時資料</text>`;
+    trendStatus.textContent = "目前無法顯示歷史趨勢。";
+    tempTrend.textContent = "無資料";
+    humidityTrend.textContent = "無資料";
+    windTrend.textContent = "無資料";
+    return;
+  }
+
+  const width = 720;
+  const height = 260;
+  const padding = { top: 28, right: 26, bottom: 34, left: 36 };
+  const tempPoints = normalizePoints(points.map((point) => point.temperature), width, height, padding);
+  const humidityPoints = normalizePoints(points.map((point) => point.humidity), width, height, padding);
+  const windPoints = normalizePoints(points.map((point) => point.windSpeed), width, height, padding);
+  const firstTime = points[0].time.slice(11, 16);
+  const lastTime = points[points.length - 1].time.slice(11, 16);
+
+  trendChart.innerHTML = `
+    <line class="chart-grid" x1="36" y1="28" x2="36" y2="226"></line>
+    <line class="chart-grid" x1="36" y1="226" x2="694" y2="226"></line>
+    <line class="chart-grid" x1="36" y1="94" x2="694" y2="94"></line>
+    <line class="chart-grid" x1="36" y1="160" x2="694" y2="160"></line>
+    <polyline class="chart-line chart-temp" points="${tempPoints}"></polyline>
+    <polyline class="chart-line chart-humidity" points="${humidityPoints}"></polyline>
+    <polyline class="chart-line chart-wind" points="${windPoints}"></polyline>
+    <text x="36" y="246" class="chart-label">${firstTime}</text>
+    <text x="694" y="246" text-anchor="end" class="chart-label">${lastTime}</text>
+    <text x="42" y="22" class="chart-label">過去 24 小時</text>
+  `;
+  trendStatus.textContent = `已載入 ${points.length} 筆 hourly 資料。`;
+  tempTrend.textContent = summarizeSeries(points, "temperature", " C");
+  humidityTrend.textContent = summarizeSeries(points, "humidity", "%", 0);
+  windTrend.textContent = summarizeSeries(points, "windSpeed", " km/h");
+}
+
 async function fetchCurrentWeather(data) {
   const { latitude, longitude } = data.coordinates;
   const params = new URLSearchParams({
     latitude,
     longitude,
     current: "temperature_2m,relative_humidity_2m,wind_speed_10m,rain",
+    hourly: "temperature_2m,relative_humidity_2m,wind_speed_10m",
+    past_days: "1",
+    forecast_days: "1",
     timezone: "Asia/Taipei"
   });
   const url = `https://api.open-meteo.com/v1/forecast?${params.toString()}`;
@@ -353,7 +439,8 @@ async function fetchCurrentWeather(data) {
     humidity: weather.current.relative_humidity_2m,
     windSpeed: weather.current.wind_speed_10m,
     rain: weather.current.rain || 0,
-    time: weather.current.time
+    time: weather.current.time,
+    history: getLast24Hours(weather.hourly, weather.current.time)
   };
 }
 
@@ -368,6 +455,11 @@ function setLoadingWeather() {
   activityRiskSummary.textContent = "正在依即時天氣資料判斷蜂群活動風險。";
   activityRiskFactors.innerHTML = "";
   actionAdviceList.innerHTML = "<li>等待即時資料更新。</li>";
+  trendStatus.textContent = "正在讀取過去 24 小時資料。";
+  trendChart.innerHTML = "";
+  tempTrend.textContent = "讀取中";
+  humidityTrend.textContent = "讀取中";
+  windTrend.textContent = "讀取中";
 }
 
 function renderBaseResult(data) {
@@ -402,6 +494,7 @@ function renderWeather(data, weather) {
   assistantTemp.value = weather.temperature.toFixed(1);
   assistantHumidity.value = Math.round(weather.humidity);
   renderActivityRisk(weather);
+  renderTrendChart(weather.history);
   renderAssistantAdvice();
 }
 
@@ -416,6 +509,7 @@ function renderWeatherError(data) {
   riskBadge.textContent = data.baseRiskLevel;
   riskBadge.className = `risk-badge ${riskClass(data.baseRiskLevel)}`;
   renderActivityRisk(fallbackWeather);
+  renderTrendChart([]);
   renderAssistantAdvice();
 }
 
