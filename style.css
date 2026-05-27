@@ -24,6 +24,52 @@ body {
   line-height: 1.65;
 }
 
+.farm-dock {
+  position: fixed;
+  top: 118px;
+  left: max(18px, calc((100vw - 1180px) / 2 - 300px));
+  z-index: 10;
+  width: 260px;
+  padding: 18px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 14px 34px rgba(31, 37, 32, 0.08);
+}
+
+.farm-dock h2 {
+  margin-bottom: 12px;
+  font-size: 1.25rem;
+}
+
+.dock-region {
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.farm-dock strong {
+  display: block;
+  margin-bottom: 14px;
+  font-size: 1.35rem;
+  line-height: 1.25;
+}
+
+.farm-dock a {
+  display: block;
+  padding: 10px 12px;
+  color: #fff;
+  background: var(--leaf);
+  border-radius: 6px;
+  font-weight: 900;
+  text-align: center;
+  text-decoration: none;
+}
+
+.farm-dock a:hover {
+  background: #315f42;
+}
+
 .hero {
   min-height: 76vh;
   display: grid;
@@ -215,7 +261,7 @@ select {
 
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
   margin-bottom: 26px;
 }
@@ -238,18 +284,6 @@ select {
   display: block;
   margin-top: 8px;
   font-size: 1.08rem;
-}
-
-.map-block a {
-  display: inline-block;
-  margin-top: 10px;
-  color: var(--leaf);
-  font-weight: 900;
-  text-decoration: none;
-}
-
-.map-block a:hover {
-  text-decoration: underline;
 }
 
 .text-block {
@@ -342,6 +376,12 @@ footer p {
 }
 
 @media (max-width: 920px) {
+  .farm-dock {
+    position: static;
+    width: min(1180px, calc(100% - 32px));
+    margin: 18px auto 0;
+  }
+
   .hero,
   .dashboard {
     grid-template-columns: 1fr;
