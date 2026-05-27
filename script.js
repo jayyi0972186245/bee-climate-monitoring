@@ -165,6 +165,7 @@ const deviceSummary = document.querySelector("#deviceSummary");
 const dockRegion = document.querySelector("#dockRegion");
 const dockFarmName = document.querySelector("#dockFarmName");
 const dockMapLink = document.querySelector("#dockMapLink");
+const dockMapFrame = document.querySelector("#dockMapFrame");
 const climateFeature = document.querySelector("#climateFeature");
 const beeImpact = document.querySelector("#beeImpact");
 const monitoringAdvice = document.querySelector("#monitoringAdvice");
@@ -270,6 +271,7 @@ function renderBaseResult(data) {
   dockRegion.textContent = data.region;
   dockFarmName.textContent = data.farmName;
   dockMapLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.mapQuery)}`;
+  dockMapFrame.src = `https://www.google.com/maps?q=${encodeURIComponent(data.mapQuery)}&output=embed`;
   climateFeature.textContent = data.climateFeature;
   beeImpact.textContent = data.beeImpact;
   monitoringAdvice.textContent = data.monitoringAdvice;
