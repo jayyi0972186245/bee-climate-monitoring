@@ -19,9 +19,12 @@ Use this skill to turn Taiwan regional climate traits and live weather readings 
    - 即時溫度
    - 即時風速
    - 即時濕度
+   - Google 地圖蜂場查詢
    - 氣候特性
    - 蜜蜂影響
    - 風險等級
+   - 蜜蜂活動風險指數
+   - 蜂農可執行建議
    - 監測建議
    - 是否啟動控制設備
 
@@ -47,6 +50,25 @@ Use this skill to turn Taiwan regional climate traits and live weather readings 
 - Above 85%: raise dampness, fungal, and disease risk; recommend moisture control and high-humidity alert.
 - Below 45%: raise dehydration risk; recommend water supply reminders.
 
+### Rain
+
+- Rain detected: reduce outside-foraging expectations and recommend avoiding hive opening.
+
+## Bee Activity Risk Index
+
+Convert sensor values into:
+
+- 正常: stable for regular monitoring.
+- 注意: strengthen monitoring and prepare control actions.
+- 高風險: avoid hive inspection and activate control devices when needed.
+
+Recommended action examples:
+
+- 今日不建議開箱檢查
+- 建議啟動霧化器
+- 建議補充糖水
+- 建議加強遮陰
+
 ## Risk Level Guidance
 
 - 低: suitable for bee activity; general monitoring is enough.
@@ -61,3 +83,4 @@ Write concise Traditional Chinese. Use practical recommendations suitable for a 
 ## Data Source
 
 Use `climate_rules.json` as the project dataset. The website can fetch current weather from Open-Meteo using the stored coordinates.
+Use `farmName` and `mapQuery` to create a Google Maps search link for a local bee farm or bee farm search result. For Pingtung, use 陳家蜂蜜 as the example farm.
