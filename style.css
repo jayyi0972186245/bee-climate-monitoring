@@ -215,7 +215,7 @@ select {
 
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
   margin-bottom: 26px;
 }
@@ -238,6 +238,18 @@ select {
   display: block;
   margin-top: 8px;
   font-size: 1.08rem;
+}
+
+.map-block a {
+  display: inline-block;
+  margin-top: 10px;
+  color: var(--leaf);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.map-block a:hover {
+  text-decoration: underline;
 }
 
 .text-block {
