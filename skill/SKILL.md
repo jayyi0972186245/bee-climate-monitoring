@@ -24,6 +24,7 @@ Use this skill to turn Taiwan regional climate traits and live weather readings 
    - 蜜蜂影響
    - 風險等級
    - 蜜蜂活動風險指數
+   - 24 小時歷史趨勢
    - 蜂農可執行建議
    - 監測建議
    - 是否啟動控制設備
@@ -68,6 +69,16 @@ Recommended action examples:
 - 建議啟動霧化器
 - 建議補充糖水
 - 建議加強遮陰
+
+## Historical Trend
+
+When hourly data is available, summarize the past 24 hours:
+
+- Temperature trend
+- Humidity trend
+- Wind speed trend
+
+Use the trend to support whether the current risk is sudden, persistent, or improving.
 
 ## Risk Level Guidance
 
