@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智慧蜂箱特殊氣候監測平台</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Taiwan Bee Climate Monitoring</p>
+      <h1>智慧蜂箱特殊氣候監測平台</h1>
+      <p class="subtitle">依據台灣各地特殊氣候與即時天氣資料，分析蜜蜂活動風險與蜂箱監測建議。</p>
+    </div>
+    <img class="hero-image" src="assets/smart-beehive-climate-hero.png" alt="智慧蜂箱與氣候監測主視覺">
+  </header>
+
+  <main>
+    <section class="control-band" aria-labelledby="city-title">
+      <div>
+        <p class="section-kicker">縣市選擇</p>
+        <h2 id="city-title">選擇蜂箱所在地</h2>
+      </div>
+      <label class="select-wrap" for="citySelect">
+        <span>地區</span>
+        <select id="citySelect">
+          <option value="屏東">屏東</option>
+          <option value="高雄">高雄</option>
+          <option value="台南">台南</option>
+          <option value="嘉義">嘉義</option>
+          <option value="雲林">雲林</option>
+          <option value="台中">台中</option>
+          <option value="新竹">新竹</option>
+          <option value="台北">台北</option>
+          <option value="宜蘭">宜蘭</option>
+          <option value="花蓮">花蓮</option>
+          <option value="台東">台東</option>
+          <option value="南投">南投</option>
+          <option value="澎湖">澎湖</option>
+        </select>
+      </label>
+    </section>
+
+    <section class="weather-strip" aria-live="polite">
+      <div class="weather-card">
+        <span>即時溫度</span>
+        <strong id="currentTemp">讀取中</strong>
+      </div>
+      <div class="weather-card">
+        <span>即時風速</span>
+        <strong id="currentWind">讀取中</strong>
+      </div>
+      <div class="weather-card">
+        <span>即時濕度</span>
+        <strong id="currentHumidity">讀取中</strong>
+      </div>
+      <div class="weather-card status-card">
+        <span>資料時間</span>
+        <strong id="weatherTime">讀取中</strong>
+      </div>
+    </section>
+
+    <p id="weatherStatus" class="weather-status">正在取得即時天氣資料。</p>
+
+    <section class="dashboard" aria-live="polite">
+      <article class="result-panel">
+        <div class="result-heading">
+          <div>
+            <p class="section-kicker">分析結果</p>
+            <h2 id="regionName">屏東縣</h2>
+          </div>
+          <span id="riskBadge" class="risk-badge risk-high">高</span>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-block">
+            <span>特殊氣候</span>
+            <strong id="specialClimate">落山風、高溫曝曬</strong>
+          </div>
+          <div class="info-block">
+            <span>建議設備</span>
+            <strong id="deviceSummary">風速警報、溫度警報、霧化器、補水提醒</strong>
+          </div>
+        </div>
+
+        <div class="text-block">
+          <h3>氣候特性</h3>
+          <p id="climateFeature"></p>
+        </div>
+        <div class="text-block">
+          <h3>蜜蜂影響</h3>
+          <p id="beeImpact"></p>
+        </div>
+        <div class="text-block advice">
+          <h3>監測建議</h3>
+          <p id="monitoringAdvice"></p>
+        </div>
+      </article>
+
+      <aside class="rule-panel" aria-labelledby="rules-title">
+        <p class="section-kicker">Skill 規則</p>
+        <h2 id="rules-title">即時監測判斷</h2>
+        <div class="rule-list">
+          <div class="rule-item">
+            <span class="rule-icon">溫</span>
+            <p><strong>高於 35 C</strong>：判定熱壓力風險，建議霧化降溫與補水。</p>
+          </div>
+          <div class="rule-item">
+            <span class="rule-icon">風</span>
+            <p><strong>強風或落山風</strong>：降低外勤蜂活動判斷，加入風速警示。</p>
+          </div>
+          <div class="rule-item">
+            <span class="rule-icon">濕</span>
+            <p><strong>濕度過高</strong>：提高蜂病與真菌風險，啟動防潮提醒。</p>
+          </div>
+          <div class="rule-item">
+            <span class="rule-icon">控</span>
+            <p><strong>高風險</strong>：啟動警報或控制設備，例如霧化器、遮陰、防潮或保溫提醒。</p>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="level-band" aria-labelledby="level-title">
+      <div>
+        <p class="section-kicker">Risk Level</p>
+        <h2 id="level-title">風險等級說明</h2>
+      </div>
+      <div class="level-grid">
+        <div><strong>低</strong><span>適合蜜蜂活動</span></div>
+        <div><strong>中</strong><span>需一般監測</span></div>
+        <div><strong>中高</strong><span>建議加強溫濕度或風速監測</span></div>
+        <div><strong>高</strong><span>需啟動警報或控制設備</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>作品主題：台灣各地特殊氣候對蜜蜂監測之影響網站</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
