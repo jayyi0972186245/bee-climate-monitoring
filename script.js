@@ -174,6 +174,18 @@ const currentWind = document.querySelector("#currentWind");
 const currentHumidity = document.querySelector("#currentHumidity");
 const weatherTime = document.querySelector("#weatherTime");
 const weatherStatus = document.querySelector("#weatherStatus");
+const activityStatusBadge = document.querySelector("#activityStatusBadge");
+const activityRiskSummary = document.querySelector("#activityRiskSummary");
+const activityRiskFactors = document.querySelector("#activityRiskFactors");
+const actionAdviceList = document.querySelector("#actionAdviceList");
+const seasonSelect = document.querySelector("#seasonSelect");
+const assistantTemp = document.querySelector("#assistantTemp");
+const assistantHumidity = document.querySelector("#assistantHumidity");
+const generateAssistantAdvice = document.querySelector("#generateAssistantAdvice");
+const assistantAdviceText = document.querySelector("#assistantAdviceText");
+
+let activeCity = citySelect.value;
+let activeWeather = null;
 
 function riskClass(level) {
   if (level === "低") return "risk-low";
@@ -227,6 +239,94 @@ function evaluateLiveRisk(baseLevel, weather) {
   };
 }
 
+function evaluateActivityRisk(weather) {
+  const factors = [];
+  const actions = [];
+  let score = 0;
+
+  if (weather.temperature > 35) {
+    score += 3;
+    factors.push({ title: "高溫壓力", detail: "溫度高於 35 C，蜂箱容易累積熱壓力。" });
+    actions.push("建議啟動霧化器並增加遮陰。");
+    actions.push("今日不建議正中午開箱檢查。");
+  } else if (weather.temperature >= 32) {
+    score += 1;
+    factors.push({ title: "溫度偏高", detail: "溫度偏高，需觀察蜂箱散熱狀態。" });
+    actions.push("建議加強通風並準備補水。");
+  }
+
+  if (weather.humidity > 85) {
+    score += 2;
+    factors.push({ title: "黴菌風險", detail: "濕度高於 85%，蜂箱需注意防潮與病害。" });
+    actions.push("建議啟動濕度警報並保持蜂箱乾燥。");
+  }
+
+  if (weather.windSpeed > 28.8) {
+    score += 2;
+    factors.push({ title: "採蜜效率下降", detail: "風速高於 8 m/s，外勤蜂飛行與採集可能下降。" });
+    actions.push("建議降低外勤蜂數判斷權重。");
+  }
+
+  if (weather.rain > 0) {
+    score += 2;
+    factors.push({ title: "降雨影響", detail: "目前有降雨訊號，蜜蜂外出採蜜可能減少。" });
+    actions.push("今日不建議開箱檢查。");
+  }
+
+  if (weather.humidity <= 45 || weather.temperature >= 34) {
+    actions.push("建議補充糖水或確認水源充足。");
+  }
+
+  if (factors.length === 0) {
+    factors.push({ title: "環境穩定", detail: "目前溫度、濕度與風速未觸發主要警示。" });
+    actions.push("維持一般監測並觀察外勤蜂活動。");
+  }
+
+  if (score >= 4) {
+    return { label: "高風險", className: "status-danger", summary: "目前蜂群活動風險偏高，建議採取控制措施。", factors, actions };
+  }
+
+  if (score >= 2) {
+    return { label: "注意", className: "status-warning", summary: "目前環境條件需要注意，建議加強監測。", factors, actions };
+  }
+
+  return { label: "正常", className: "status-normal", summary: "目前環境條件大致穩定，適合一般監測。", factors, actions };
+}
+
+function renderActivityRisk(weather) {
+  const result = evaluateActivityRisk(weather);
+  activityStatusBadge.className = `activity-badge ${result.className}`;
+  activityStatusBadge.innerHTML = `<span class="status-dot"></span>${result.label}`;
+  activityRiskSummary.textContent = result.summary;
+  activityRiskFactors.innerHTML = result.factors
+    .map((factor) => `<div class="factor-item"><strong>${factor.title}</strong><span>${factor.detail}</span></div>`)
+    .join("");
+  actionAdviceList.innerHTML = result.actions
+    .map((action) => `<li>${action}</li>`)
+    .join("");
+}
+
+function generateAdviceText(city, weather, season) {
+  const data = climateData[city];
+  const temp = Number(assistantTemp.value);
+  const humidity = Number(assistantHumidity.value);
+  const tempText = temp >= 35 ? "高溫明顯" : temp >= 32 ? "溫度偏高" : temp < 15 ? "溫度偏低" : "溫度穩定";
+  const humidityText = humidity > 85 ? "濕度偏高" : humidity < 45 ? "濕度偏低" : "濕度適中";
+  const suggestions = [];
+
+  if (temp >= 35) suggestions.push("開啟霧化器", "增加遮陰", "避免正中午開箱");
+  if (humidity > 85) suggestions.push("加強防潮", "檢查蜂箱通風");
+  if (humidity < 45) suggestions.push("確認水源", "補充糖水");
+  if (weather && weather.windSpeed > 28.8) suggestions.push("暫時降低外勤活動判斷");
+  if (suggestions.length === 0) suggestions.push("維持一般巡檢", "觀察攝影模組回傳的外勤蜂活動");
+
+  return `${data.region}目前為${season}，${tempText}且${humidityText}。受到「${data.specialClimate}」影響，蜜蜂可能出現活動變化或蜂箱環境壓力。建議${suggestions.join("、")}。`;
+}
+
+function renderAssistantAdvice() {
+  assistantAdviceText.textContent = generateAdviceText(activeCity, activeWeather, seasonSelect.value);
+}
+
 function formatTime(value) {
   if (!value) return "無資料";
   return value.replace("T", " ");
@@ -237,7 +337,7 @@ async function fetchCurrentWeather(data) {
   const params = new URLSearchParams({
     latitude,
     longitude,
-    current: "temperature_2m,relative_humidity_2m,wind_speed_10m",
+    current: "temperature_2m,relative_humidity_2m,wind_speed_10m,rain",
     timezone: "Asia/Taipei"
   });
   const url = `https://api.open-meteo.com/v1/forecast?${params.toString()}`;
@@ -252,6 +352,7 @@ async function fetchCurrentWeather(data) {
     temperature: weather.current.temperature_2m,
     humidity: weather.current.relative_humidity_2m,
     windSpeed: weather.current.wind_speed_10m,
+    rain: weather.current.rain || 0,
     time: weather.current.time
   };
 }
@@ -262,6 +363,11 @@ function setLoadingWeather() {
   currentHumidity.textContent = "讀取中";
   weatherTime.textContent = "讀取中";
   weatherStatus.textContent = "正在取得即時天氣資料。";
+  activityStatusBadge.className = "activity-badge status-warning";
+  activityStatusBadge.innerHTML = `<span class="status-dot"></span>讀取中`;
+  activityRiskSummary.textContent = "正在依即時天氣資料判斷蜂群活動風險。";
+  activityRiskFactors.innerHTML = "";
+  actionAdviceList.innerHTML = "<li>等待即時資料更新。</li>";
 }
 
 function renderBaseResult(data) {
@@ -282,6 +388,7 @@ function renderBaseResult(data) {
 function renderWeather(data, weather) {
   const liveRisk = evaluateLiveRisk(data.baseRiskLevel, weather);
   const liveNotes = liveRisk.notes.length > 0 ? ` 即時補充：${liveRisk.notes.join("；")}。` : " 即時天氣未觸發額外警示。";
+  activeWeather = weather;
 
   currentTemp.textContent = `${weather.temperature.toFixed(1)} C`;
   currentWind.textContent = `${weather.windSpeed.toFixed(1)} km/h`;
@@ -292,9 +399,15 @@ function renderWeather(data, weather) {
   riskBadge.textContent = liveRisk.level;
   riskBadge.className = `risk-badge ${riskClass(liveRisk.level)}`;
   monitoringAdvice.textContent = `${data.monitoringAdvice}${liveNotes}`;
+  assistantTemp.value = weather.temperature.toFixed(1);
+  assistantHumidity.value = Math.round(weather.humidity);
+  renderActivityRisk(weather);
+  renderAssistantAdvice();
 }
 
 function renderWeatherError(data) {
+  const fallbackWeather = { temperature: Number(assistantTemp.value) || 30, humidity: Number(assistantHumidity.value) || 70, windSpeed: 0, rain: 0 };
+  activeWeather = fallbackWeather;
   currentTemp.textContent = "無法取得";
   currentWind.textContent = "無法取得";
   currentHumidity.textContent = "無法取得";
@@ -302,9 +415,12 @@ function renderWeatherError(data) {
   weatherStatus.textContent = "目前無法取得即時資料，先顯示地區氣候規則判斷。";
   riskBadge.textContent = data.baseRiskLevel;
   riskBadge.className = `risk-badge ${riskClass(data.baseRiskLevel)}`;
+  renderActivityRisk(fallbackWeather);
+  renderAssistantAdvice();
 }
 
 async function updateResult(city) {
+  activeCity = city;
   const data = climateData[city];
   renderBaseResult(data);
   setLoadingWeather();
@@ -320,5 +436,10 @@ async function updateResult(city) {
 citySelect.addEventListener("change", (event) => {
   updateResult(event.target.value);
 });
+
+generateAssistantAdvice.addEventListener("click", renderAssistantAdvice);
+seasonSelect.addEventListener("change", renderAssistantAdvice);
+assistantTemp.addEventListener("input", renderAssistantAdvice);
+assistantHumidity.addEventListener("input", renderAssistantAdvice);
 
 updateResult(citySelect.value);

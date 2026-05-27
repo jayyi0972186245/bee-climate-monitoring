@@ -81,6 +81,51 @@
 
         <p id="weatherStatus" class="weather-status">正在取得即時天氣資料。</p>
 
+        <section class="smart-advice-grid" aria-live="polite">
+          <article class="activity-risk-panel">
+            <p class="section-kicker">Bee Activity Risk</p>
+            <div class="activity-heading">
+              <h2>蜜蜂活動風險指數</h2>
+              <span id="activityStatusBadge" class="activity-badge status-warning">
+                <span class="status-dot"></span>
+                注意
+              </span>
+            </div>
+            <p id="activityRiskSummary" class="activity-summary">正在依即時天氣資料判斷蜂群活動風險。</p>
+            <div id="activityRiskFactors" class="factor-list"></div>
+            <div class="action-box">
+              <h3>今日可執行建議</h3>
+              <ul id="actionAdviceList"></ul>
+            </div>
+          </article>
+
+          <article class="assistant-panel">
+            <p class="section-kicker">AI Assistant</p>
+            <h2>蜂箱 AI 建議助手</h2>
+            <div class="assistant-form">
+              <label>
+                <span>季節</span>
+                <select id="seasonSelect">
+                  <option value="春季">春季</option>
+                  <option value="夏季">夏季</option>
+                  <option value="秋季">秋季</option>
+                  <option value="冬季">冬季</option>
+                </select>
+              </label>
+              <label>
+                <span>溫度 C</span>
+                <input id="assistantTemp" type="number" step="0.1" value="30">
+              </label>
+              <label>
+                <span>濕度 %</span>
+                <input id="assistantHumidity" type="number" step="1" value="70">
+              </label>
+            </div>
+            <button id="generateAssistantAdvice" type="button">產生蜂農建議</button>
+            <p id="assistantAdviceText" class="assistant-output">選擇地區並取得即時資料後，系統會產生蜂農建議。</p>
+          </article>
+        </section>
+
     <section class="dashboard" aria-live="polite">
       <article class="result-panel">
         <div class="result-heading">
