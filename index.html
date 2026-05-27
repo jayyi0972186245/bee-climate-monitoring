@@ -7,22 +7,6 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <aside class="farm-dock" aria-labelledby="farmDockTitle">
-    <p class="section-kicker">Google 地圖蜂場</p>
-    <h2 id="farmDockTitle">蜂場查詢</h2>
-    <p class="dock-region" id="dockRegion">屏東縣</p>
-    <strong id="dockFarmName">陳家蜂蜜</strong>
-    <iframe
-      id="dockMapFrame"
-      class="dock-map"
-      title="Google 地圖蜂場查詢"
-      src="https://www.google.com/maps?q=%E9%99%B3%E5%AE%B6%E8%9C%82%E8%9C%9C%20%E5%B1%8F%E6%9D%B1&output=embed"
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
-    <a id="dockMapLink" href="https://www.google.com/maps/search/?api=1&query=%E9%99%B3%E5%AE%B6%E8%9C%82%E8%9C%9C%20%E5%B1%8F%E6%9D%B1" target="_blank" rel="noopener">開啟 Google 地圖</a>
-  </aside>
-
   <header class="hero">
     <div class="hero-copy">
       <p class="eyebrow">Taiwan Bee Climate Monitoring</p>
@@ -33,51 +17,69 @@
   </header>
 
   <main>
-    <section class="control-band" aria-labelledby="city-title">
-      <div>
-        <p class="section-kicker">縣市選擇</p>
-        <h2 id="city-title">選擇蜂箱所在地</h2>
-      </div>
-      <label class="select-wrap" for="citySelect">
-        <span>地區</span>
-        <select id="citySelect">
-          <option value="屏東">屏東</option>
-          <option value="高雄">高雄</option>
-          <option value="台南">台南</option>
-          <option value="嘉義">嘉義</option>
-          <option value="雲林">雲林</option>
-          <option value="台中">台中</option>
-          <option value="新竹">新竹</option>
-          <option value="台北">台北</option>
-          <option value="宜蘭">宜蘭</option>
-          <option value="花蓮">花蓮</option>
-          <option value="台東">台東</option>
-          <option value="南投">南投</option>
-          <option value="澎湖">澎湖</option>
-        </select>
-      </label>
-    </section>
+    <div class="monitor-layout">
+      <aside class="farm-dock" aria-labelledby="farmDockTitle">
+        <p class="section-kicker">Google 地圖蜂場</p>
+        <h2 id="farmDockTitle">蜂場查詢</h2>
+        <p class="dock-region" id="dockRegion">屏東縣</p>
+        <strong id="dockFarmName">陳家蜂蜜</strong>
+        <iframe
+          id="dockMapFrame"
+          class="dock-map"
+          title="Google 地圖蜂場查詢"
+          src="https://www.google.com/maps?q=%E9%99%B3%E5%AE%B6%E8%9C%82%E8%9C%9C%20%E5%B1%8F%E6%9D%B1&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        <a id="dockMapLink" href="https://www.google.com/maps/search/?api=1&query=%E9%99%B3%E5%AE%B6%E8%9C%82%E8%9C%9C%20%E5%B1%8F%E6%9D%B1" target="_blank" rel="noopener">開啟 Google 地圖</a>
+      </aside>
 
-    <section class="weather-strip" aria-live="polite">
-      <div class="weather-card">
-        <span>即時溫度</span>
-        <strong id="currentTemp">讀取中</strong>
-      </div>
-      <div class="weather-card">
-        <span>即時風速</span>
-        <strong id="currentWind">讀取中</strong>
-      </div>
-      <div class="weather-card">
-        <span>即時濕度</span>
-        <strong id="currentHumidity">讀取中</strong>
-      </div>
-      <div class="weather-card status-card">
-        <span>資料時間</span>
-        <strong id="weatherTime">讀取中</strong>
-      </div>
-    </section>
+      <div class="monitor-content">
+        <section class="control-band" aria-labelledby="city-title">
+          <div>
+            <p class="section-kicker">縣市選擇</p>
+            <h2 id="city-title">選擇蜂箱所在地</h2>
+          </div>
+          <label class="select-wrap" for="citySelect">
+            <span>地區</span>
+            <select id="citySelect">
+              <option value="屏東">屏東</option>
+              <option value="高雄">高雄</option>
+              <option value="台南">台南</option>
+              <option value="嘉義">嘉義</option>
+              <option value="雲林">雲林</option>
+              <option value="台中">台中</option>
+              <option value="新竹">新竹</option>
+              <option value="台北">台北</option>
+              <option value="宜蘭">宜蘭</option>
+              <option value="花蓮">花蓮</option>
+              <option value="台東">台東</option>
+              <option value="南投">南投</option>
+              <option value="澎湖">澎湖</option>
+            </select>
+          </label>
+        </section>
 
-    <p id="weatherStatus" class="weather-status">正在取得即時天氣資料。</p>
+        <section class="weather-strip" aria-live="polite">
+          <div class="weather-card">
+            <span>即時溫度</span>
+            <strong id="currentTemp">讀取中</strong>
+          </div>
+          <div class="weather-card">
+            <span>即時風速</span>
+            <strong id="currentWind">讀取中</strong>
+          </div>
+          <div class="weather-card">
+            <span>即時濕度</span>
+            <strong id="currentHumidity">讀取中</strong>
+          </div>
+          <div class="weather-card status-card">
+            <span>資料時間</span>
+            <strong id="weatherTime">讀取中</strong>
+          </div>
+        </section>
+
+        <p id="weatherStatus" class="weather-status">正在取得即時天氣資料。</p>
 
     <section class="dashboard" aria-live="polite">
       <article class="result-panel">
@@ -150,6 +152,8 @@
         <div><strong>高</strong><span>需啟動警報或控制設備</span></div>
       </div>
     </section>
+      </div>
+    </div>
   </main>
 
   <footer>
