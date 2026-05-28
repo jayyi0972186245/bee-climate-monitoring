@@ -16,16 +16,61 @@
     <span class="flying-bee bee-six"></span>
   </div>
 
+  <nav class="top-nav" aria-label="主要導覽">
+    <a class="brand" href="#top">
+      <span class="brand-mark">蜂</span>
+      <span>
+        <strong>智慧蜂箱氣候風險預警平台</strong>
+        <small>Smart Beehive Climate Risk Monitoring</small>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="#top" class="active">首頁</a>
+      <a href="#monitor">即時監測</a>
+      <a href="#risk">風險預警</a>
+      <a href="#trendTitle">數據分析</a>
+      <a href="#farmDockTitle">蜂場地圖</a>
+      <a href="#assistantTitle">AI 建議助手</a>
+    </div>
+    <div class="nav-location">
+      <span id="navLocation">屏東縣</span>
+    </div>
+  </nav>
+
   <header class="hero">
     <div class="hero-copy">
-      <p class="eyebrow">Taiwan Bee Climate Monitoring</p>
-      <h1>智慧蜂箱特殊氣候監測平台</h1>
-      <p class="subtitle">依據台灣各地特殊氣候與即時天氣資料，分析蜜蜂活動風險與蜂箱監測建議。</p>
+      <p class="hero-pill">台灣各地特殊氣候即時監測</p>
+      <h1>智慧蜂箱氣候風險預警平台</h1>
+      <p class="subtitle">整合即時天氣、環境感測與蜜蜂行為數據，提供蜂農最即時的風險預警與管理建議，守護每一箱蜜蜂的健康。</p>
+      <div class="hero-actions">
+        <a href="#monitor" class="primary-action">開始監測</a>
+        <a href="#trendTitle" class="secondary-action">查看更多數據</a>
+      </div>
     </div>
-    <img class="hero-image" src="assets/smart-beehive-climate-hero.png" alt="智慧蜂箱與氣候監測主視覺">
+    <div class="hero-visual">
+      <img class="hero-image" src="assets/smart-beehive-climate-hero.png" alt="智慧蜂箱與氣候監測主視覺">
+      <div class="hero-metrics" aria-label="即時監測摘要">
+        <div>
+          <span>氣溫</span>
+          <strong id="heroTemp">讀取中</strong>
+        </div>
+        <div>
+          <span>風速</span>
+          <strong id="heroWind">讀取中</strong>
+        </div>
+        <div>
+          <span>濕度</span>
+          <strong id="heroHumidity">讀取中</strong>
+        </div>
+        <div>
+          <span>風險</span>
+          <strong id="heroRisk">高</strong>
+        </div>
+      </div>
+    </div>
   </header>
 
-  <main>
+  <main id="monitor">
     <div class="monitor-layout">
       <aside class="farm-dock" aria-labelledby="farmDockTitle">
         <p class="section-kicker">Google 地圖蜂場</p>
@@ -44,6 +89,29 @@
       </aside>
 
       <div class="monitor-content">
+        <section class="overview-cards" aria-label="系統功能摘要">
+          <article>
+            <p class="section-kicker">即時監測</p>
+            <h2>環境感測資料</h2>
+            <p>同步顯示溫度、濕度、風速與資料時間。</p>
+          </article>
+          <article>
+            <p class="section-kicker">風險預警</p>
+            <h2 id="overviewRisk">蜜蜂活動風險</h2>
+            <p id="overviewRiskText">系統正在判斷目前蜂箱環境風險。</p>
+          </article>
+          <article>
+            <p class="section-kicker">蜂箱管理</p>
+            <h2>可執行建議</h2>
+            <p>將感測資料轉換為霧化、補水、防潮與開箱建議。</p>
+          </article>
+          <article>
+            <p class="section-kicker">AI 建議</p>
+            <h2>蜂農決策輔助</h2>
+            <p>依地區、季節與環境條件生成蜂農建議文字。</p>
+          </article>
+        </section>
+
         <section class="control-band" aria-labelledby="city-title">
           <div>
             <p class="section-kicker">縣市選擇</p>
@@ -90,7 +158,7 @@
 
         <p id="weatherStatus" class="weather-status">正在取得即時天氣資料。</p>
 
-        <section class="smart-advice-grid" aria-live="polite">
+        <section id="risk" class="smart-advice-grid" aria-live="polite">
           <article class="activity-risk-panel">
             <p class="section-kicker">Bee Activity Risk</p>
             <div class="activity-heading">
@@ -110,7 +178,7 @@
 
           <article class="assistant-panel">
             <p class="section-kicker">AI Assistant</p>
-            <h2>蜂箱 AI 建議助手</h2>
+            <h2 id="assistantTitle">蜂箱 AI 建議助手</h2>
             <div class="assistant-form">
               <label>
                 <span>季節</span>

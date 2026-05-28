@@ -188,6 +188,11 @@ const trendChart = document.querySelector("#trendChart");
 const tempTrend = document.querySelector("#tempTrend");
 const humidityTrend = document.querySelector("#humidityTrend");
 const windTrend = document.querySelector("#windTrend");
+const navLocation = document.querySelector("#navLocation");
+const heroTemp = document.querySelector("#heroTemp");
+const heroWind = document.querySelector("#heroWind");
+const heroHumidity = document.querySelector("#heroHumidity");
+const heroRisk = document.querySelector("#heroRisk");
 
 let activeCity = citySelect.value;
 let activeWeather = null;
@@ -468,6 +473,7 @@ function renderBaseResult(data) {
   deviceSummary.textContent = data.devices.join("、");
   dockRegion.textContent = data.region;
   dockFarmName.textContent = data.farmName;
+  navLocation.textContent = data.region;
   dockMapLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.mapQuery)}`;
   dockMapFrame.src = `https://www.google.com/maps?q=${encodeURIComponent(data.mapQuery)}&output=embed`;
   climateFeature.textContent = data.climateFeature;
@@ -475,6 +481,7 @@ function renderBaseResult(data) {
   monitoringAdvice.textContent = data.monitoringAdvice;
   riskBadge.textContent = data.baseRiskLevel;
   riskBadge.className = `risk-badge ${riskClass(data.baseRiskLevel)}`;
+  heroRisk.textContent = data.baseRiskLevel;
 }
 
 function renderWeather(data, weather) {
@@ -485,11 +492,15 @@ function renderWeather(data, weather) {
   currentTemp.textContent = `${weather.temperature.toFixed(1)} C`;
   currentWind.textContent = `${weather.windSpeed.toFixed(1)} km/h`;
   currentHumidity.textContent = `${Math.round(weather.humidity)}%`;
+  heroTemp.textContent = `${weather.temperature.toFixed(1)} C`;
+  heroWind.textContent = `${weather.windSpeed.toFixed(1)} km/h`;
+  heroHumidity.textContent = `${Math.round(weather.humidity)}%`;
   weatherTime.textContent = formatTime(weather.time);
   weatherStatus.textContent = "即時資料已更新，來源為 Open-Meteo。";
 
   riskBadge.textContent = liveRisk.level;
   riskBadge.className = `risk-badge ${riskClass(liveRisk.level)}`;
+  heroRisk.textContent = liveRisk.level;
   monitoringAdvice.textContent = `${data.monitoringAdvice}${liveNotes}`;
   assistantTemp.value = weather.temperature.toFixed(1);
   assistantHumidity.value = Math.round(weather.humidity);
